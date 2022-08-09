@@ -9,11 +9,13 @@ const dbName = 'social-events'
 const app = express();
 
 const authRouter = require('./routes/authRoutes')
+const userRouter = require('./routes/userRoutes')
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 
 
 mongoose.connect(
