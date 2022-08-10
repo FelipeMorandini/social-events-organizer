@@ -30,7 +30,7 @@ router.put("/", verifyToken, async (req, res) => {
     }
 
     const updateData = {
-        username: req.body.username,
+        username: req.body.name,
         email: req.body.email
     }
 
