@@ -6,15 +6,32 @@
         <h2 id="nav-title">Social Events</h2>
         <div id="nav-links">
             <router-link to="/">Home</router-link>
-            <router-link to="/register">Sign Up</router-link>
-            <router-link to="/about">Sign In</router-link>
+            <router-link to="/login" v-show="!authenticated">Sign In</router-link>
+            <router-link to="/register" v-show="!authenticated">Sign Up</router-link>
+            <router-link to="/dashboard" v-show="authenticated">Sign In</router-link>
+            <router-link to="/profile" v-show="authenticated">My Profile</router-link>
+            <button @click="logout($event)" v-show="authenticated">Logout</button>
         </div>
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+
     export default {
-        name: "Navbar"
+        name: "Navbar",
+        methods: {
+            logout(e) {
+                e.preventDefault();
+                this.$store.commit("logout");
+                this.$router.push('/');
+            }
+        },
+        computed: {
+            ...mapState([
+                'authenticated'
+            ])
+        }
     }
 </script>
 

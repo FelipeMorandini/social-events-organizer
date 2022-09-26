@@ -1,70 +1,57 @@
 <template>
     <div>
         <Message :msg="msg" :msgClass="msgClass" />
-        <form id="user-form" @submit="page === 'Register' ? register($event) : update($event)">
+        <form id="login-form" @submit="login($event)">
             <div class="input-container">
-                <label for="name">Name:</label>
-                <input type="text" id="name" v-model="name" placeholder="Please enter your name:">
+                <label for="email">E-Mail</label>
+                <input type="email" name="email" v-model="email" id="email" placeholder="Enter your e-mail">
             </div>
             <div class="input-container">
-                <label for="email">Name:</label>
-                <input type="text" id="email" v-model="name" placeholder="Please enter your email:">
+                <label for="password">E-Mail</label>
+                <input type="password" name="password" v-model="password" id="password" placeholder="Enter your password">
             </div>
-            <div class="input-container">
-                <label for="password">Name:</label>
-                <input type="password" id="password" v-model="name" placeholder="Please enter your password:">
-            </div>
-            <div class="input-container">
-                <label for="confirmPassword">Name:</label>
-                <input type="password" id="confirmPassword" v-model="name" placeholder="Please confirm your password:">
-            </div>
-            <InputSubmit :text="btnText" />
+            <InputSubmit text="Login" />
         </form>
     </div>
 </template>
 
 <script>
-    import InputSubmit from './form/InputSubmit.vue'
     import Message from './Message.vue'
+    import InputSubmit from './form/InputSubmit.vue'
 
     export default {
-        name: "UserForm",
+        name: 'LoginForm',
+        components: {
+            Message,
+            InputSubmit
+        },
         data() {
             return {
-                name: null,
                 email: null,
                 password: null,
-                confirmPassword: null,
-                btnText: "Register",
                 msg: null,
                 msgClass: null
             }
         },
-        props: ["user", "page", "btnText"],
-        components: {
-            InputSubmit,
-            Message
-        },
         methods: {
-            async register(e) {
+            async login(e) {
                 e.preventDefault();
-                
+
                 const data = {
-                    name: this.name,
                     email: this.email,
-                    password: this.password,
-                    confirmpassword: this.confirmPassword
+                    password: this.password
                 }
 
                 const jsondata = JSON.stringify(data);
 
-                await fetch("http://localhost:3000/api/auth/register", {
+                await fetch('http://localhost:3000/api/auth/login', {
                     method: "POST",
                     headers: { "content-type": "application/json" },
                     body: jsondata
                 })
-                .then((res) => res.json())
+                .then(res => res.json())
                 .then((data) => {
+
                     let auth = false;
 
                     if(data.error) {
@@ -78,7 +65,6 @@
 
                         this.$store.commit("authenticate", { token: data.token, userId: data.userId })
                     }
-
                     
                     setTimeout(() => {
                         if(!auth) {
@@ -87,7 +73,6 @@
                             this.$router.push("dashboard");
                         }
                     }, 2000)
-                    
 
                 })
                 .catch((err) => {
@@ -95,12 +80,13 @@
                 })
 
             }
+            
         }
     }
 </script>
 
 <style scoped>
-    #user-form {
+    #login-form {
         max-width: 400px;
         margin: 0 auto;
         display: flex;

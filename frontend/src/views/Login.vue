@@ -1,29 +1,28 @@
 <template>
-    <div class="register">
-        <h1>Sign Up</h1>
-        <UserForm :user="{}" page="register" btnText="Sign Up" />
+    <div class="login">
+        <h1>Login</h1>
+        <LoginForm />
     </div>
 </template>
 
 <script>
-    import UserForm from '../components/UserForm.vue'
+    import LoginForm from '../components/LoginForm'
 
     export default {
-        name: "Register",
         components: {
-            UserForm
+            LoginForm
         }
     }
 </script>
 
 <style scoped>
-    .register {
+    .login {
         text-align: center;
         padding-top: 40px;
         padding-bottom: 100px;
     }
 
-    .register h1 {
+    .login h1 {
         margin-bottom: 40px;
     }
 </style>
