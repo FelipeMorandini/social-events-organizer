@@ -2,6 +2,7 @@
     <div>
         <Message :msg="msg" :msgClass="msgClass" />
         <form id="user-form" @submit="page === 'Register' ? register($event) : update($event)">
+            <input type="hidden" name="id" id="id" v-model="id">
             <div class="input-container">
                 <label for="name">Name:</label>
                 <input type="text" id="name" v-model="name" placeholder="Please enter your name:">
@@ -31,8 +32,9 @@
         name: "UserForm",
         data() {
             return {
-                name: null,
-                email: null,
+                id: this.user._id || null,
+                name: this.user.name || null,
+                email: this.user.email || null,
                 password: null,
                 confirmPassword: null,
                 btnText: "Register",
@@ -94,6 +96,50 @@
                     console.log(err);
                 })
 
+            },
+
+            async update(e) {
+                e.preventDefault();
+
+                const data = {
+                    id: this.id,
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                    confirmpassword: this.confirmPassword
+                }
+
+                const jsondata = JSON.stringify(data);
+                const token = this.$store.getters.token;
+
+                await fetch("http://localhost:3000/api/user", {
+                    method: "PATCH",
+                    headers: {
+                        "content-type": "application/json",
+                        "auth-token": token
+                    },
+                    body: jsondata
+                })
+                .then((res) => res.json())
+                .then((data) => {
+
+                    if(data.error) {
+                        this.msg = data.error;
+                        this.msgClass = "error";
+                    } else {
+                        this.msg = data.msg;
+                        this.msgClass = "success";
+                    }
+
+                    setTimeout(() => {
+                        this.msg = null;
+                    }, 2000)
+                    
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
             }
         }
     }

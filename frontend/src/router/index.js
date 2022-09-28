@@ -50,6 +50,30 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/newevent',
+    name: 'NewEvent',
+    component: () => import('../views/NewEvent.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/editevent/:id',
+    name: 'EditEvent',
+    component: () => import('../views/EditEvent.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/event/:id',
+    name: 'Event',
+    component: () => import('../views/Event.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
